@@ -51,9 +51,9 @@ services:
     ports:
       - '8080:8080'
   
-  client:
+  listener:
     build:
-      context: ./microservice/client
+      context: ./microservice/listener
       dockerfile: Dockerfile
     links:
       - postgres
@@ -67,6 +67,6 @@ services:
       - PGPASSWORD=password
     volumes:
       - C:/Users/nryba/.m2/repository:/root/.m2/repository
-      - ./microservice/watcheclientr:/app
+      - ./microservice/listener:/app
     ports:
       - '8081:8080'
