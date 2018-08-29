@@ -50,3 +50,23 @@ services:
       - ./microservice/watcher:/app
     ports:
       - '8080:8080'
+  
+  client:
+    build:
+      context: ./microservice/client
+      dockerfile: Dockerfile
+    links:
+      - postgres
+      - kafka
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGDATABASE=kafka
+      - PGUSER=nick
+      - PGPASSWORD=password
+    volumes:
+      - C:/Users/nryba/.m2/repository:/root/.m2/repository
+      - ./microservice/watcheclientr:/app
+    ports:
+      - '8081:8080'
