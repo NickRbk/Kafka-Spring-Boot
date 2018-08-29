@@ -1,0 +1,52 @@
+version: '3'
+services:
+
+  zookeeper:
+    image: zookeeper
+    ports:
+      - '2181:2181'
+
+  kafka:
+    image: wurstmeister/kafka:2.11-2.0.0
+    links:
+      - zookeeper
+    environment:
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_ADVERTISED_PORT=9092
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CREATE_TOPICS=onlineStream
+
+  postgres:
+    build: ./postgres
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=nick
+    ports:
+      - '5432:5432'
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - '80:80'
+
+  watcher:
+    build:
+      context: ./microservice/watcher
+      dockerfile: Dockerfile
+    links:
+      - postgres
+      - kafka
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGDATABASE=kafka
+      - PGUSER=nick
+      - PGPASSWORD=password
+    volumes:
+      - C:/Users/nryba/.m2/repository:/root/.m2/repository
+      - ./microservice/watcher:/app
+    ports:
+      - '8080:8080'
