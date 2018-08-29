@@ -14,6 +14,7 @@ public class TestProducer implements ITestProducer {
 
     @Override
     public void send(String topic, String data) {
+        System.out.println("MY DATA HERE ===================================>" + data);
         kafkaProducer.send(topic, "", new TestModel(data));
     }
 }
