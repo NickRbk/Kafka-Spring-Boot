@@ -18,4 +18,9 @@ public class TestController {
         testProducer.send(topic, message);
         return "Send status: OK";
     }
+
+    @GetMapping("/p")
+    public void rssProducer(@RequestParam("topic") String topic) {
+        testProducer.fetchAndSendRSS(topic);
+    }
 }
