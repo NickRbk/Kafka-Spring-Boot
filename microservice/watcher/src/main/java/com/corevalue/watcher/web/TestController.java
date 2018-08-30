@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 public class TestController {
-    private ITestProducer testProducer;
+   private ITestProducer testProducer;
 
     @GetMapping()
     public String testProduce(@RequestParam("topic") String topic,
                               @RequestParam("msg") String message) {
+
         testProducer.send(topic, message);
         return "Send status: OK";
     }
