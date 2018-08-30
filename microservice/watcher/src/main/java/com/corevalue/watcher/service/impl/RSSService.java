@@ -1,10 +1,12 @@
 package com.corevalue.watcher.service.impl;
 
-import com.corevalue.watcher.model.TestModel;
-import com.corevalue.watcher.service.ITestProducer;
+import com.corevalue.watcher.domain.Resource;
+import com.corevalue.watcher.domain.ResourceRepository;
+import com.corevalue.watcher.event.NewRSSEvent;
+import com.corevalue.watcher.service.IKafkaService;
+import com.corevalue.watcher.service.IRSSService;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
-import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import lombok.AllArgsConstructor;
@@ -14,7 +16,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -24,28 +26,37 @@ import java.util.List;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class TestProducer implements ITestProducer {
+public class RSSService implements IRSSService {
 
-    private KafkaTemplate<String, TestModel> kafkaProducer;
+    private final IKafkaService kafkaService;
+    private final ApplicationEventPublisher publisher;
+    private final ResourceRepository resourceRepository;
 
     @Override
-    public void send(String topic, String data) {
-        kafkaProducer.send(topic, "", new TestModel(data));
+    public void fetchAndSendRSSAsync(String topic) {
+        List<Resource> resources = resourceRepository.findAll();
+        resources.forEach(resource -> publisher.publishEvent(new NewRSSEvent(this, topic, resource.getUrl())));
     }
 
     @Override
     public void fetchAndSendRSS(String topic) {
-        String url = "https://www.pravda.com.ua/rss/";
+        List<Resource> resources = resourceRepository.findAll();
+        resources.forEach(resource -> this.getAndParseRSS(topic, resource.getUrl()));
+    }
+
+    @Override
+    public void getAndParseRSS(String topic, String resourceUrl) {
         try (CloseableHttpClient client = HttpClients.createMinimal()) {
-            HttpUriRequest request = new HttpGet(url);
+            HttpUriRequest request = new HttpGet(resourceUrl);
             try (CloseableHttpResponse response = client.execute(request);
                  InputStream stream = response.getEntity().getContent()) {
 
                 SyndFeedInput input = new SyndFeedInput();
                 SyndFeed feed = input.build(new XmlReader(stream));
                 List<SyndEntry> entries = feed.getEntries();
-                entries.forEach(entry -> this.send(topic, entry.getLink()));
-            } catch (FeedException e) {
+
+                entries.forEach(entry -> kafkaService.send(topic, entry.getLink()));
+            } catch (Exception e) {
                 log.error(e.getMessage());
             }
         } catch (IOException e) {

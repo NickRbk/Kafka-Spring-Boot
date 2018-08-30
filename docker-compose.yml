@@ -46,7 +46,7 @@ services:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - PGHOST=postgres
       - PGPORT=5432
-      - PGDATABASE=kafka
+      - PGDATABASE=resourcedb
       - PGUSER=nick
       - PGPASSWORD=password
     volumes:
