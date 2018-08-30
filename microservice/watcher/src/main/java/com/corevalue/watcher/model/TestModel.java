@@ -6,11 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-//@AllArgsConstructor
+@AllArgsConstructor
 public class TestModel {
     private String name;
-
-    public TestModel(String name) {
-        this.name = name;
-    }
 }
