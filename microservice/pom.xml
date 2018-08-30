@@ -21,6 +21,7 @@
 
     <modules>
         <module>watcher</module>
+        <module>listener</module>
     </modules>
 
     <properties>
