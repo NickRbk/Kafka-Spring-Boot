@@ -1,12 +1,15 @@
 package com.corevalue.watcher.service.impl;
 
-import com.corevalue.watcher.domain.Resource;
-import com.corevalue.watcher.domain.ResourceRepository;
+import com.corevalue.watcher.domain.entity.Resource;
+import com.corevalue.watcher.domain.repository.ResourceRepository;
 import com.corevalue.watcher.event.NewRSSEvent;
 import com.corevalue.watcher.service.IKafkaService;
 import com.corevalue.watcher.service.IRSSService;
+import com.corevalue.watcher.service.IResourceService;
+import com.corevalue.watcher.service.RSSErrorCode;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import lombok.AllArgsConstructor;
@@ -31,36 +34,51 @@ public class RSSService implements IRSSService {
     private final IKafkaService kafkaService;
     private final ApplicationEventPublisher publisher;
     private final ResourceRepository resourceRepository;
+    private final IResourceService resourceService;
 
     @Override
     public void fetchAndSendRSSAsync(String topic) {
-        List<Resource> resources = resourceRepository.findAll();
+        List<Resource> resources = resourceRepository.findValidResources();
         resources.forEach(resource -> publisher.publishEvent(new NewRSSEvent(this, topic, resource.getUrl())));
     }
 
     @Override
     public void fetchAndSendRSS(String topic) {
-        List<Resource> resources = resourceRepository.findAll();
-        resources.forEach(resource -> this.getAndParseRSS(topic, resource.getUrl()));
+        List<Resource> resources = resourceRepository.findValidResources();
+        resources.forEach(resource -> this.sendRSSItemsToKafka(topic, resource.getUrl()));
     }
 
     @Override
-    public void getAndParseRSS(String topic, String resourceUrl) {
+    public void sendRSSItemsToKafka(String topic, String resourceUrl) {
         try (CloseableHttpClient client = HttpClients.createMinimal()) {
+
             HttpUriRequest request = new HttpGet(resourceUrl);
-            try (CloseableHttpResponse response = client.execute(request);
-                 InputStream stream = response.getEntity().getContent()) {
-
-                SyndFeedInput input = new SyndFeedInput();
-                SyndFeed feed = input.build(new XmlReader(stream));
-                List<SyndEntry> entries = feed.getEntries();
-
-                entries.forEach(entry -> kafkaService.send(topic, entry.getLink()));
-            } catch (Exception e) {
-                log.error(e.getMessage());
-            }
+            tryToParseAndSendRSS(client, request, topic, resourceUrl);
         } catch (IOException e) {
+            this.processInvalidResource(resourceUrl, RSSErrorCode.ACCESS_ERROR, e.getMessage());
             log.error(e.getMessage());
         }
+    }
+
+    private void tryToParseAndSendRSS(CloseableHttpClient client, HttpUriRequest request,
+                                      String topic, String resourceUrl) {
+        try (CloseableHttpResponse response = client.execute(request);
+             InputStream stream = response.getEntity().getContent()) {
+
+            SyndFeedInput input = new SyndFeedInput();
+            SyndFeed feed = input.build(new XmlReader(stream));
+            List<SyndEntry> rssItems = feed.getEntries();
+            rssItems.forEach(item -> kafkaService.send(topic, item.getLink()));
+        } catch (FeedException e) {
+            this.processInvalidResource(resourceUrl, RSSErrorCode.PARSE_ERROR, e.getMessage());
+            log.error(e.getMessage());
+        } catch (Exception e) {
+            log.error("Something went wrong ================> " + e.getMessage());
+        }
+    }
+
+    private void processInvalidResource(String resourceUrl, RSSErrorCode errorCode, String errorMsg) {
+        resourceService.saveInvalidResource(resourceUrl, errorCode, errorMsg);
+        resourceService.invalidateResource(resourceUrl);
     }
 }
