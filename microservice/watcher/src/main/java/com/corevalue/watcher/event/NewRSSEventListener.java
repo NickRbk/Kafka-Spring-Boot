@@ -17,6 +17,6 @@ public class NewRSSEventListener {
     public void onNewRSSItem(NewRSSEvent event) {
         String topic = event.getTopic();
         String resourceUrl = event.getResourceUrl();
-        RSSService.getAndParseRSS(topic, resourceUrl);
+        RSSService.sendRSSItemsToKafka(topic, resourceUrl);
     }
 }

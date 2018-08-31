@@ -1,4 +1,6 @@
 spring:
+  liquibase:
+    change-log: classpath:/db/master-changelog.xml
 
   datasource:
     driver-class-name: org.postgresql.Driver

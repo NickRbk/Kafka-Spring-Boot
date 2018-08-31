@@ -1,4 +1,4 @@
-package com.corevalue.watcher.domain;
+package com.corevalue.watcher.domain.entity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,4 +19,7 @@ public class Resource {
 
     @NotNull
     private String url;
+
+    @Column(name = "is_valid")
+    private boolean isValid;
 }
