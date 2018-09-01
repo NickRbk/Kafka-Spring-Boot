@@ -10,7 +10,7 @@ import {Subscription} from '../../node_modules/rxjs';
 })
 export class AppComponent implements OnDestroy{
   private serverUrl = 'http://localhost:8081/socket';
-  public title = 'WebSockets demo';
+  public title = '';
   public messages = [];
   private newsSub: Subscription;
 
@@ -21,6 +21,7 @@ export class AppComponent implements OnDestroy{
     const ws = new SockJS(this.serverUrl);
     const client = Stomp.over(ws);
     client.connect({}, () => {
+      this.title = 'WebSockets demo';
       this.newsSub = client.subscribe('/news', (message) => {
         if (message.body) {
           console.log(message.body);

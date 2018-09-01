@@ -2,6 +2,7 @@ package com.corevalue.watcher.service.impl;
 
 import com.corevalue.watcher.model.TestModel;
 import com.corevalue.watcher.service.IKafkaService;
+import com.rometools.rome.feed.synd.SyndEntry;
 import lombok.AllArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ public class KafkaService implements IKafkaService {
     private final KafkaTemplate<String, TestModel> kafkaProducer;
 
     @Override
-    public void send(String topic, String data) {
-        kafkaProducer.send(topic, "", new TestModel(data));
+    public void send(String topic, SyndEntry data) {
+        kafkaProducer.send(topic, "", new TestModel(data.getLink()));
     }
 }

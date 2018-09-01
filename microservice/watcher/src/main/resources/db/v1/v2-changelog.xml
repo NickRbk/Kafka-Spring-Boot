@@ -11,274 +11,265 @@
 
     <changeSet id="1" author="Nick Rybak">
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0629.com.ua/rss"/>
+            <column name="URL" value="https://www.0629.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.061.ua/rss"/>
+            <column name="URL" value="https://www.061.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.62.ua/rss"/>
+            <column name="URL" value="https://www.62.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.057.ua/rss"/>
+            <column name="URL" value="https://www.057.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.048.ua/rss"/>
+            <column name="URL" value="https://www.048.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.056.ua/rss"/>
+            <column name="URL" value="https://www.056.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0564.ua/rss"/>
+            <column name="URL" value="https://www.0564.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.44.ua/rss"/>
+            <column name="URL" value="https://www.44.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0642.ua/rss"/>
+            <column name="URL" value="https://www.0642.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0512.com.ua/rss"/>
+            <column name="URL" value="https://www.0512.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.032.ua/rss"/>
+            <column name="URL" value="https://www.032.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0352.ua/rss"/>
+            <column name="URL" value="https://www.0352.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.06242.com.ua/rss"/>
+            <column name="URL" value="https://www.06242.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0542.ua/rss"/>
+            <column name="URL" value="https://www.0542.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.05447.com.ua/rss"/>
+            <column name="URL" value="https://www.05447.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.06274.com.ua/rss"/>
+            <column name="URL" value="https://www.06274.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.05366.com.ua/rss"/>
+            <column name="URL" value="https://www.05366.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.06239.com.ua/rss"/>
+            <column name="URL" value="https://www.06239.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.6264.com.ua/rss"/>
+            <column name="URL" value="https://www.6264.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0432.ua/rss"/>
+            <column name="URL" value="https://www.0432.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0532.ua/rss"/>
+            <column name="URL" value="https://www.0532.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0623.com.ua/rss"/>
+            <column name="URL" value="https://www.0623.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0552.ua/rss"/>
+            <column name="URL" value="https://www.0552.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.5692.com.ua/rss"/>
+            <column name="URL" value="https://www.5692.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0522.ua/rss"/>
+            <column name="URL" value="https://www.0522.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0462.ua/rss"/>
+            <column name="URL" value="https://www.0462.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.6262.com.ua/rss"/>
+            <column name="URL" value="https://www.6262.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0412.ua/rss"/>
+            <column name="URL" value="https://www.0412.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0372.ua/rss"/>
+            <column name="URL" value="https://www.0372.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0332.ua/rss"/>
+            <column name="URL" value="https://www.0332.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0362.ua/rss"/>
+            <column name="URL" value="https://www.0362.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0342.ua/rss"/>
+            <column name="URL" value="https://www.0342.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0472.ua/rss"/>
+            <column name="URL" value="https://www.0472.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.06277.com.ua/rss"/>
+            <column name="URL" value="https://www.06277.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.06252.com.ua/rss"/>
+            <column name="URL" value="https://www.06252.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.06153.com.ua/rss"/>
+            <column name="URL" value="https://www.06153.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.04868.com.ua/rss"/>
+            <column name="URL" value="https://www.04868.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.06236.com.ua/rss"/>
+            <column name="URL" value="https://www.06236.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0566.com.ua/rss"/>
+            <column name="URL" value="https://www.0566.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0382.ua/rss"/>
+            <column name="URL" value="https://www.0382.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.06257.in.ua/rss"/>
+            <column name="URL" value="https://www.06257.in.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.3131.com.ua/rss"/>
+            <column name="URL" value="https://www.3131.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.04565.com.ua/rss"/>
+            <column name="URL" value="https://www.06432.in.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.06432.in.ua/rss"/>
+            <column name="URL" value="https://www.0312.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.0312.ua/rss"/>
+            <column name="URL" value="https://www.04141.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.04141.com.ua/rss"/>
+            <column name="URL" value="https://www.4594.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.4594.com.ua/rss"/>
+            <column name="URL" value="https://www.06452.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.06452.com.ua/rss"/>
+            <column name="URL" value="https://www.04578.in.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.04578.in.ua/rss"/>
+            <column name="URL" value="https://www.5632.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.5632.com.ua/rss"/>
+            <column name="URL" value="https://zik.ua/rss/export.rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.06434.com.ua/rss"/>
+            <column name="URL" value="https://zaxid.net/rss/1.xml"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://zik.ua/rss/export.rss"/>
+            <column name="URL" value="https://cripo.com.ua/export/rss.xml"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://zaxid.net/rss/1.xml"/>
+            <column name="URL" value="https://ura-inform.com/rss/ru/rss.xml"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://cripo.com.ua/export/rss.xml"/>
+            <column name="URL" value="https://www.3652.ru/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://ura-inform.com/rss/ru/rss.xml"/>
+            <column name="URL" value="https://www.04563.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.3652.ru/rss"/>
+            <column name="URL" value="https://24tv.ua/rss/all.xml"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.04563.com.ua/rss"/>
+            <column name="URL" value="https://ru.espreso.tv/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://24tv.ua/rss/all.xml"/>
+            <column name="URL" value="https://112.ua/rss/index.rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://ru.espreso.tv/rss"/>
-        </insert>
-        <insert tableName="RESOURCES">
-            <column name="URL" value="http://112.ua/rss/index.rss"/>
-        </insert>
-        <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.ombudsman.gov.ua/ua/rss.rss"/>
+            <column name="URL" value="https://www.ombudsman.gov.ua/ua/rss.rss"/>
         </insert>
         <insert tableName="RESOURCES">
             <column name="URL" value="https://www.gp.gov.ua/ua/news.html?rss=gp_55355"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.president.gov.ua/rss/news/all.rss"/>
+            <column name="URL" value="https://www.president.gov.ua/rss/news/all.rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://zn.ua/rss"/>
+            <column name="URL" value="https://zn.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://lb.ua/rss/rss.xml"/>
+            <column name="URL" value="https://gazeta.ua/ru/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://gazeta.ua/ru/rss"/>
+            <column name="URL" value="https://fakty.ua/rss_feed/all"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://fakty.ua/rss_feed/all"/>
+            <column name="URL" value="https://rss.unian.net/site/news_rus.rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://rss.unian.net/site/news_rus.rss"/>
+            <column name="URL" value="https://obozrevatel.com/rss.xml"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://obozrevatel.com/rss.xml"/>
+            <column name="URL" value="https://gordonua.com/xml/rss.html"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://gordonua.com/xml/rss.html"/>
+            <column name="URL" value="https://k.img.com.ua/rss/ru/ukraine.xml"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://k.img.com.ua/rss/ru/ukraine.xml"/>
+            <column name="URL" value="https://www.unn.com.ua/rss/news_uk.xml"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.unn.com.ua/rss/news_uk.xml"/>
+            <column name="URL" value="https://focus.ua/modules/rss.php"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://focus.ua/modules/rss.php"/>
+            <column name="URL" value="https://interfax.com.ua/news/last.rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://interfax.com.ua/news/last.rss"/>
+            <column name="URL" value="https://telegraf.com.ua/yandex-feed"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://telegraf.com.ua/yandex-feed"/>
+            <column name="URL" value="https://24portal.net/feed"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://24portal.net/feed"/>
+            <column name="URL" value="https://onpress.info/feed"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://onpress.info/feed"/>
+            <column name="URL" value="https://www.sq.com.ua/rss/rss_all.xml"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.sq.com.ua/rss/rss_all.xml"/>
+            <column name="URL" value="https://glavnoe.ua/rss/newsall.xml"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://glavnoe.ua/rss/newsall.xml"/>
+            <column name="URL" value="https://ipress.ua/rss/export.rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://ipress.ua/rss/export.rss"/>
-        </insert>
-        <insert tableName="RESOURCES">
-            <column name="URL" value="http://kp.ua/rss/feed.xml"/>
+            <column name="URL" value="https://kp.ua/rss/feed.xml"/>
         </insert>
         <insert tableName="RESOURCES">
             <column name="URL" value="https://www.pravda.com.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.rbc.ua/static/rss/all.ukr.rss.xml"/>
+            <column name="URL" value="https://www.rbc.ua/static/rss/all.ukr.rss.xml"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://tsn.ua/rss"/>
+            <column name="URL" value="https://tsn.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://kaniv.net/kaniv_feed0.xml"/>
+            <column name="URL" value="https://kaniv.net/kaniv_feed0.xml"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://ilich.in.ua/rss"/>
+            <column name="URL" value="https://ilich.in.ua/rss"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://replyua.net/rss.xml"/>
+            <column name="URL" value="https://replyua.net/rss.xml"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://hvylya.net/feed"/>
+            <column name="URL" value="https://hvylya.net/feed"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://reporter-ua.com/xml_export/yandex"/>
+            <column name="URL" value="https://reporter-ua.com/xml_export/yandex"/>
         </insert>
         <insert tableName="RESOURCES">
-            <column name="URL" value="http://www.dni.ru/rss.xml"/>
+            <column name="URL" value="https://www.dni.ru/rss.xml"/>
         </insert>
     </changeSet>
 </databaseChangeLog>
