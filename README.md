@@ -33,4 +33,10 @@ All configuration to start up project are in `docker-compose.yml` file.
 2) follow prerequesits
 2) enter to downloaded folder and run `docker-compose up`
 
-**To shut down app use `docker-compose down`**
+After application start up go to `localhost:4200` to monitor current work (it may takes a couple of minutes to up all containers).
+When you enter by this link you establish websocket connection with listener service and will get information about countes of items
+we received from RSS (on screen should be `WebSocket connection STATUS: OK`). 
+
+After start in 3 minutes workers will start to check resources from DB (sample data prepopulated) with schedule every 5 minutes.
+
+**To shut down app use `docker-compose down`**.

@@ -57,7 +57,7 @@ services:
     environment:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - KAFKA_TOPIC=onlineStream
-      - RSS_CRON_UPDATER=* 1/5 * * * *
+      - RSS_CRON_UPDATER=* 3/5 * * * *
       - PGHOST=postgres
       - PGPORT=5432
       - PGDATABASE=resourcedb
