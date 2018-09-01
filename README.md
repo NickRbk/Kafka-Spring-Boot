@@ -24,6 +24,7 @@ All configuration to start up project are in `docker-compose.yml` file.
 ## Prerequesits
 - Provide actual absolute path to your `.m2` directory on host machine in `docker-compose.yml` file.
 - Enter to `microservice` folder and run `mvn install` to install parrent pom for our microservices.
+- Enter to `client` folder and run `yarn install` to install dependencies for frontend side.
 - **IMPORTANT:** Enter to `postgres` folder and modify `init.sh`:
  select _**End of Line Sequence**_ from `CRLF` to `LF`. If you don't do that this script failed when you run docker
  because Linux don't recognize `CRLF` end line sequence.
@@ -31,7 +32,7 @@ All configuration to start up project are in `docker-compose.yml` file.
  ## How to start app?
 1) download project `git clone https://github.com/NickRbk/Monitoring-service-docker.git`
 2) follow prerequesits
-2) enter to downloaded folder and run `docker-compose up`
+2) enter to downloaded folder and run `docker-compose up --build`
 
 After application start up go to `localhost:4200` to monitor current work (it may takes a couple of minutes to up all containers).
 When you enter by this link you establish websocket connection with listener service and will get information about countes of items
