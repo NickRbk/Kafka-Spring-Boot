@@ -11,6 +11,11 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
     \c rss_itemdb
     CREATE TABLE rss_items (
         ID serial PRIMARY KEY,
-        NAME varchar(300) NOT NULL
+        URL varchar(300) NOT NULL,
+        TITLE varchar(500),
+        TYPE varchar(100),
+        DESCRIPTION varchar(10000),
+        AUTHOR varchar(200),
+        PUBLISHED_DATE bigint
     )
 EOSQL

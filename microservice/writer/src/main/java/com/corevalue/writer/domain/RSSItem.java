@@ -18,5 +18,16 @@ public class RSSItem {
     private Long id;
 
     @NotNull
-    private String name;
+    private String url;
+
+    private String title;
+
+    private String type;
+
+    private String description;
+
+    @Column(name = "published_date")
+    private long publishedDate;
+
+    private String author;
 }

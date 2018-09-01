@@ -1,6 +1,6 @@
 package com.corevalue.listener.listener;
 
-import com.corevalue.listener.model.TestModel;
+import com.corevalue.listener.model.RSSItemModel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -15,8 +15,8 @@ public class Listener {
     private SimpMessagingTemplate socket;
 
     @KafkaListener(topics = "onlineStream")
-    public void testConsumption(@Payload TestModel testModel) {
-        log.error(testModel.toString());
-        socket.convertAndSend("/news", testModel);
+    public void testConsumption(@Payload RSSItemModel RSSItemModel) {
+        log.error(RSSItemModel.toString());
+        socket.convertAndSend("/news", RSSItemModel);
     }
 }

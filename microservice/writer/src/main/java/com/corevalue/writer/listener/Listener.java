@@ -2,7 +2,7 @@ package com.corevalue.writer.listener;
 
 import com.corevalue.writer.domain.RSSItem;
 import com.corevalue.writer.domain.RSSItemRepository;
-import com.corevalue.writer.model.TestModel;
+import com.corevalue.writer.model.RSSItemModel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -16,7 +16,16 @@ public class Listener {
     private final RSSItemRepository rssItemRepository;
 
     @KafkaListener(topics = "onlineStream")
-    public void testConsumption(@Payload TestModel testModel) {
-        rssItemRepository.save(RSSItem.builder().name(testModel.getName()).build());
+    public void testConsumption(@Payload RSSItemModel rssItem) {
+        rssItemRepository.save(
+                RSSItem.builder()
+                        .url(rssItem.getUrl())
+                        .title(rssItem.getTitle())
+                        .type(rssItem.getType())
+                        .description(rssItem.getDescription())
+                        .publishedDate(rssItem.getPublishedDate())
+                        .author(rssItem.getAuthor())
+                        .build()
+        );
     }
 }
