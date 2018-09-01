@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class Listener {
     private SimpMessagingTemplate socket;
 
-    @KafkaListener(topics = "onlineStream")
+    @KafkaListener(topics = "${kafka.topic}")
     public void testConsumption(@Payload RSSItemDTO RSSItemModel) {
         socket.convertAndSend("/news", RSSItemModel);
     }

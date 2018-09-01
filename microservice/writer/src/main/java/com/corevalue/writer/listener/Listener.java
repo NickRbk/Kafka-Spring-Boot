@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class Listener {
     private final RSSItemRepository rssItemRepository;
 
-    @KafkaListener(topics = "onlineStream")
+    @KafkaListener(topics = "${kafka.topic}")
     public void testConsumption(@Payload RSSItemDTO rssItem) {
         rssItemRepository.save(
                 RSSItem.builder()
