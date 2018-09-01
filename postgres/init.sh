@@ -2,6 +2,9 @@
 set -e
 
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+    CREATE DATABASE resourcedb;
+    GRANT ALL PRIVILEGES ON DATABASE resourcedb TO nick;
+
     CREATE DATABASE kafka;
     GRANT ALL PRIVILEGES ON DATABASE kafka TO nick;
 EOSQL
