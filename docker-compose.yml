@@ -50,6 +50,8 @@ services:
       - kafka
     environment:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - KAFKA_TOPIC=onlineStream
+      - RSS_CRON_UPDATER=* 1/5 * * * *
       - PGHOST=postgres
       - PGPORT=5432
       - PGDATABASE=resourcedb
@@ -60,8 +62,6 @@ services:
     volumes:
       - C:/Users/nryba/.m2/repository:/root/.m2/repository
       - ./microservice/watcher:/app
-    ports:
-      - '8080:8080'
     # restart: on-failure
   
   listener:

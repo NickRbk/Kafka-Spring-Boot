@@ -2,7 +2,6 @@ package com.corevalue.watcher.service.impl;
 
 import com.corevalue.watcher.domain.entity.RSSCache;
 import com.corevalue.watcher.domain.entity.Resource;
-import com.corevalue.watcher.domain.repository.RSSCacheRepository;
 import com.corevalue.watcher.domain.repository.ResourceRepository;
 import com.corevalue.watcher.event.NewRSSEvent;
 import com.corevalue.watcher.service.*;
@@ -37,7 +36,6 @@ public class RSSService implements IRSSService {
     private final ApplicationEventPublisher publisher;
     private final ResourceRepository resourceRepository;
     private final IResourceService resourceService;
-    private final RSSCacheRepository rssCacheRepository;
     private final IRedisCache redisCache;
 
     @Override
@@ -96,7 +94,7 @@ public class RSSService implements IRSSService {
     }
 
     private List<SyndEntry> getNewRSSItems(List<SyndEntry> rssItems, String resourceUrl) {
-        Optional<RSSCache> rssCacheOptional = rssCacheRepository.findById(resourceUrl);
+        Optional<RSSCache> rssCacheOptional = redisCache.find(resourceUrl);
 
         if (rssCacheOptional.isPresent()) {
             List<SyndEntry> newItems = new ArrayList<>();
