@@ -1,14 +1,16 @@
 version: '3'
 services:
-
+  
   zookeeper:
     image: zookeeper
+    container_name: zookeeper
     ports:
       - '2181:2181'
     # restart: on-failure
 
   kafka:
     image: wurstmeister/kafka:2.11-2.0.0
+    container_name: kafka
     links:
       - zookeeper
     environment:
@@ -20,11 +22,13 @@ services:
 
   redis:
     image: redis:alpine
+    container_name: redis
     ports:
       - '6379:6379'
     
   postgres:
     build: ./postgres
+    container_name: postgres
     environment:
       - POSTGRES_PASSWORD=password
       - POSTGRES_USER=nick
@@ -33,6 +37,7 @@ services:
     restart: on-failure
   pgadmin:
     image: dpage/pgadmin4
+    container_name: pgadmin
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin
       - PGADMIN_DEFAULT_PASSWORD=admin
@@ -40,16 +45,19 @@ services:
       - '80:80'
     # restart: on-failure
 
-  watcher:
+  producer:
     build:
-      context: ./microservice/watcher
+      context: ./microservice/producer
       dockerfile: Dockerfile
+    container_name: producer
     links:
       - postgres
       - redis
       - kafka
     environment:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - KAFKA_TOPIC=onlineStream
+      - RSS_CRON_UPDATER=* 3/5 * * * *
       - PGHOST=postgres
       - PGPORT=5432
       - PGDATABASE=resourcedb
@@ -59,23 +67,44 @@ services:
       - REDIS_PORT=6379
     volumes:
       - C:/Users/nryba/.m2/repository:/root/.m2/repository
-      - ./microservice/watcher:/app
-    ports:
-      - '8080:8080'
+      - ./microservice/producer:/app
     # restart: on-failure
   
-  listener:
+  writer:
     build:
-      context: ./microservice/listener
+      context: ./microservice/writer
       dockerfile: Dockerfile
+    container_name: writer
     links:
       - postgres
       - kafka
     environment:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - KAFKA_TOPIC=onlineStream
       - PGHOST=postgres
       - PGPORT=5432
-      - PGDATABASE=kafka
+      - PGDATABASE=rss_itemdb
+      - PGUSER=nick
+      - PGPASSWORD=password
+    volumes:
+      - C:/Users/nryba/.m2/repository:/root/.m2/repository
+      - ./microservice/writer:/app
+    # restart: on-failure
+
+  listener:
+    build:
+      context: ./microservice/listener
+      dockerfile: Dockerfile
+    container_name: listener
+    links:
+      - postgres
+      - kafka
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - KAFKA_TOPIC=onlineStream
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGDATABASE=rss_itemdb
       - PGUSER=nick
       - PGPASSWORD=password
     volumes:
@@ -89,6 +118,7 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+    container_name: client
     volumes:
       - ./client:/app
     ports:

@@ -8,29 +8,32 @@ import {Subscription} from '../../node_modules/rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnDestroy{
-  private serverUrl = 'http://localhost:8081/socket';
-  public title = '';
-  public messages = [];
+
+export class AppComponent implements OnDestroy {
+
+  private serverUrl = `http://localhost:8081/socket`;
+  public title = 'WebSocket connection STATUS: OFFLINE... Please reload page';
+  public messagesCount = 0;
   private newsSub: Subscription;
 
   constructor() {
     this.initializeWebSocketConnection();
   }
+
   initializeWebSocketConnection() {
     const ws = new SockJS(this.serverUrl);
     const client = Stomp.over(ws);
     client.connect({}, () => {
-      this.title = 'WebSockets demo';
+      this.title = 'WebSocket connection STATUS: OK';
       this.newsSub = client.subscribe('/news', (message) => {
         if (message.body) {
-          console.log(message.body);
-          this.messages.push(message.body);
+          this.messagesCount++;
         }
       });
     });
     client.debug = () => {};
   }
+
   ngOnDestroy() {
     this.newsSub.unsubscribe();
   }
