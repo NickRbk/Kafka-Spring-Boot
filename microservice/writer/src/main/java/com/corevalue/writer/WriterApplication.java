@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class WritterApplication {
+public class WriterApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(WritterApplication.class, args);
+        SpringApplication.run(WriterApplication.class, args);
     }
 }

@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RSSItemModel {
+public class RSSItemDTO {
     private String url;
     private String title;
     private String type;

@@ -2,7 +2,7 @@ package com.corevalue.writer.listener;
 
 import com.corevalue.writer.domain.RSSItem;
 import com.corevalue.writer.domain.RSSItemRepository;
-import com.corevalue.writer.model.RSSItemModel;
+import com.corevalue.writer.model.RSSItemDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -16,7 +16,7 @@ public class Listener {
     private final RSSItemRepository rssItemRepository;
 
     @KafkaListener(topics = "onlineStream")
-    public void testConsumption(@Payload RSSItemModel rssItem) {
+    public void testConsumption(@Payload RSSItemDTO rssItem) {
         rssItemRepository.save(
                 RSSItem.builder()
                         .url(rssItem.getUrl())

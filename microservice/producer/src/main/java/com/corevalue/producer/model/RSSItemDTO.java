@@ -1,12 +1,13 @@
-package com.corevalue.writer.model;
+package com.corevalue.producer.model;
 
 import lombok.*;
 
-@ToString
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RSSItemModel {
+@Builder
+public class RSSItemDTO {
     private String url;
     private String title;
     private String type;

@@ -1,6 +1,6 @@
 package com.corevalue.producer.service.impl;
 
-import com.corevalue.producer.model.RSSItemModel;
+import com.corevalue.producer.model.RSSItemDTO;
 import com.corevalue.producer.service.IKafkaService;
 import com.rometools.rome.feed.synd.SyndCategory;
 import com.rometools.rome.feed.synd.SyndEntry;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class KafkaService implements IKafkaService {
 
-    private final KafkaTemplate<String, RSSItemModel> kafkaProducer;
+    private final KafkaTemplate<String, RSSItemDTO> kafkaProducer;
 
     @Override
     public void send(String topic, SyndEntry data) {
@@ -24,7 +24,7 @@ public class KafkaService implements IKafkaService {
 
 
         kafkaProducer.send(topic, "",
-               RSSItemModel.builder()
+               RSSItemDTO.builder()
                        .url(data.getLink())
                        .title(data.getTitle())
                        .type(type)
