@@ -20,8 +20,9 @@
     </parent>
 
     <modules>
-        <module>watcher</module>
+        <module>producer</module>
         <module>listener</module>
+        <module>writer</module>
     </modules>
 
     <properties>
