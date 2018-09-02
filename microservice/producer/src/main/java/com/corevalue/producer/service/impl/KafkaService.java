@@ -4,6 +4,7 @@ import com.corevalue.producer.model.RSSItemDTO;
 import com.corevalue.producer.service.IKafkaService;
 import com.rometools.rome.feed.synd.SyndCategory;
 import com.rometools.rome.feed.synd.SyndEntry;
+import com.rometools.rome.feed.synd.SyndPerson;
 import lombok.AllArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,9 @@ public class KafkaService implements IKafkaService {
                 .map(SyndCategory::getName)
                 .collect(Collectors.joining(", "));
 
+        String author = data.getAuthors().stream()
+                .map(SyndPerson::getName)
+                .collect(Collectors.joining(", "));
 
         kafkaProducer.send(topic, "",
                RSSItemDTO.builder()
@@ -30,7 +34,7 @@ public class KafkaService implements IKafkaService {
                        .type(type)
                        .description(data.getDescription().getValue())
                        .publishedDate(data.getPublishedDate().getTime())
-                       .author(data.getAuthor())
+                       .author(author)
                        .build()
         );
     }
