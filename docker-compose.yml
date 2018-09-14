@@ -20,6 +20,21 @@ services:
       - KAFKA_CREATE_TOPICS=onlineStream
     # restart: on-failure
 
+  spark:
+    build:
+      context: ./microservice/spark-word-calculation
+      dockerfile: Dockerfile
+    container_name: spark
+    links:
+      - kafka
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - KAFKA_TOPIC=onlineStream
+    volumes:
+      - C:/Users/nryba/.m2/repository:/root/.m2/repository
+      - ./microservice/spark-word-calculation:/app
+  #   # restart: on-failure
+
   redis:
     image: redis:alpine
     container_name: redis

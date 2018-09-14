@@ -23,6 +23,7 @@
         <module>producer</module>
         <module>listener</module>
         <module>writer</module>
+        <module>spark-word-calculation</module>
     </modules>
 
     <properties>
