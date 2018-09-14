@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Configuration;
 public class SparkConfiguration {
 
     @Bean
-    public SparkConf sparkConf() {
+    public SparkConf conf() {
         return new SparkConf()
                 .setAppName("WordCounter")
-                .setMaster("local[2]")
-                .set("spark.executor.memory", "2g")
-                .set("spark.driver.memory", "2g");
+                .setMaster("local[*]")
+                .set("spark.executor.memory", "1g");
+//                .set("spark.driver.memory", "3g");
     }
 }
