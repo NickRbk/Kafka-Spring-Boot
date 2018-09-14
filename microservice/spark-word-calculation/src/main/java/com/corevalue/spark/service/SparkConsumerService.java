@@ -3,12 +3,13 @@ package com.corevalue.spark.service;
 import com.corevalue.spark.config.KafkaConsumerConfiguration;
 import com.corevalue.spark.model.RSSItemDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.common.protocol.types.Field;
 import org.apache.spark.SparkConf;
 import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaInputDStream;
+import org.apache.spark.streaming.api.java.JavaPairDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.apache.spark.streaming.kafka010.ConsumerStrategies;
 import org.apache.spark.streaming.kafka010.KafkaUtils;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 import scala.Tuple2;
 
 import java.util.List;
-import java.util.function.Function;
 
 @Service
 @Slf4j
@@ -44,7 +44,14 @@ public class SparkConsumerService {
                 ConsumerStrategies.Subscribe(topics, kafkaConsumer.consumerConfigs())
         );
 
-        JavaDStream<RSSItemDTO> lines = messages.map(ConsumerRecord::value);
+        JavaDStream<String> lines = messages.map(data -> {
+            int index = StringUtils.ordinalIndexOf(data.value().getUrl(), "/", 3);
+            return data.value().getUrl().substring(0, index);
+        });
+
+        JavaPairDStream<String, Integer> urlCounts = lines
+                .mapToPair(url -> new Tuple2<>(url, 1))
+                .reduceByKey(Integer::sum);
 
 //        lines.map(data -> data.getUrl().toLowerCase())
 //                .mapToPair(url -> new Tuple2<String, Integer>(url, 1))
@@ -52,7 +59,7 @@ public class SparkConsumerService {
 //                .mapToPair(Tuple2::swap)
 //                .map(Tuple2::_2);
 
-        lines.count().print();
+        urlCounts.print();
 
         ssc.start();
         try {
