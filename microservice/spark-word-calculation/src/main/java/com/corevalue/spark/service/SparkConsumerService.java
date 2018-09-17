@@ -1,64 +1,93 @@
 package com.corevalue.spark.service;
 
-import com.corevalue.spark.config.KafkaConsumerConfiguration;
 import com.corevalue.spark.model.RSSItemDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.common.protocol.types.Field;
-import org.apache.spark.SparkConf;
-import org.apache.spark.streaming.Durations;
-import org.apache.spark.streaming.api.java.JavaDStream;
-import org.apache.spark.streaming.api.java.JavaInputDStream;
-import org.apache.spark.streaming.api.java.JavaStreamingContext;
-import org.apache.spark.streaming.kafka010.ConsumerStrategies;
-import org.apache.spark.streaming.kafka010.KafkaUtils;
-import org.apache.spark.streaming.kafka010.LocationStrategies;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.spark.api.java.function.MapFunction;
+import org.apache.spark.sql.*;
+
+import org.apache.spark.sql.streaming.OutputMode;
+import org.apache.spark.sql.streaming.StreamingQuery;
+import org.apache.spark.sql.streaming.StreamingQueryException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import scala.Tuple2;
 
-import java.util.List;
-import java.util.function.Function;
+import static org.apache.spark.sql.functions.from_json;
+import static org.apache.spark.sql.functions.col;
+
+import static com.corevalue.spark.config.SchemaDefinitions.rssSchema;
 
 @Service
 @Slf4j
 public class SparkConsumerService {
+    @Value(value = "${kafka.input.topic}")
+    private String inputTopic;
 
-    @Value("#{'${kafka.topic}'.split(',')}")
-    private List<String> topics;
+    @Value(value = "${kafka.output.topic}")
+    private String outputTopic;
 
-    private final SparkConf conf;
-    private final KafkaConsumerConfiguration kafkaConsumer;
+    @Value(value = "${spring.kafka.consumer.bootstrap-servers}")
+    private String bootstrapServers;
 
-    public SparkConsumerService(SparkConf conf, KafkaConsumerConfiguration kafkaConsumer) {
-        this.conf = conf;
-        this.kafkaConsumer = kafkaConsumer;
+    private final SparkSession spark;
+
+    public SparkConsumerService(SparkSession spark) {
+        this.spark = spark;
     }
 
     public void run() {
-        JavaStreamingContext ssc = new JavaStreamingContext(conf, Durations.seconds(2));
+        spark.sparkContext().setLogLevel("ERROR");
 
-        JavaInputDStream<ConsumerRecord<String, RSSItemDTO>> messages = KafkaUtils.createDirectStream(
-                ssc,
-                LocationStrategies.PreferConsistent(),
-                ConsumerStrategies.Subscribe(topics, kafkaConsumer.consumerConfigs())
-        );
+        Dataset<Row> kafkaStreamDS = spark
+                .readStream()
+                .format("kafka")
+                .option("kafka.bootstrap.servers", bootstrapServers)
+                .option("startingOffsets", "earliest")
+                .option("subscribe", inputTopic)
+                .load();
 
-        JavaDStream<RSSItemDTO> lines = messages.map(ConsumerRecord::value);
+        Dataset<RSSItemDTO> rssItemDS = kafkaStreamDS
+                .select(from_json(col("value").cast("string"), rssSchema).as("data"))
+                .select("data.*")
+                .as(Encoders.bean(RSSItemDTO.class));
 
-//        lines.map(data -> data.getUrl().toLowerCase())
-//                .mapToPair(url -> new Tuple2<String, Integer>(url, 1))
-//                .reduceByKey(Integer::sum)
-//                .mapToPair(Tuple2::swap)
-//                .map(Tuple2::_2);
+        Dataset<String> urlDS = rssItemDS.map((MapFunction<RSSItemDTO, String>) data -> {
+            int index = StringUtils.ordinalIndexOf(data.getUrl(), "/", 3);
+            return data.getUrl().substring(0, index);
+        }, Encoders.STRING());
 
-        lines.count().print();
+//        Dataset<String> words = urlDS.flatMap((FlatMapFunction<String, String>) w -> {
+//           return Arrays.asList(w.toLowerCase().split(" ")).iterator();
+//        }, Encoders.STRING());
+//                .filter((FilterFunction<String>) String::isEmpty)
+//                .coalesce(1);
 
-        ssc.start();
+        Dataset<Row> scoring = urlDS.groupBy("value")
+                .count()
+                .orderBy(col("count").desc());
+
+        StreamingQuery kafka = scoring.toJSON()
+                .writeStream()
+                .format("kafka")
+                .outputMode(OutputMode.Complete())
+                .option("kafka.bootstrap.servers", bootstrapServers)
+                .option("topic", outputTopic)
+                .option("checkpointLocation", "~/Desktop/checkpoint")
+                .queryName("urlCounterKafkaStream")
+                .start();
+
+        StreamingQuery console = scoring
+                .writeStream()
+                .format("console")
+                .outputMode(OutputMode.Complete())
+                .start();
+
         try {
-            ssc.awaitTermination();
-        } catch (InterruptedException e) {
-            log.error(e.getMessage());
+            kafka.awaitTermination();
+            console.awaitTermination();
+        } catch (StreamingQueryException e) {
+            e.printStackTrace();
         }
     }
 }
