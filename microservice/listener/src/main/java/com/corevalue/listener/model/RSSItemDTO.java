@@ -8,10 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RSSItemDTO {
-    private String url;
-    private String title;
-    private String type;
-    private String description;
-    private long publishedDate;
-    private String author;
+    private String value;
+    private Integer count;
 }

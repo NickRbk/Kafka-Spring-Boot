@@ -21,8 +21,11 @@ import static com.corevalue.spark.config.SchemaDefinitions.rssSchema;
 @Service
 @Slf4j
 public class SparkConsumerService {
-    @Value(value = "${kafka.topic}")
-    private String topic;
+    @Value(value = "${kafka.input.topic}")
+    private String inputTopic;
+
+    @Value(value = "${kafka.output.topic}")
+    private String outputTopic;
 
     @Value(value = "${spring.kafka.consumer.bootstrap-servers}")
     private String bootstrapServers;
@@ -41,7 +44,7 @@ public class SparkConsumerService {
                 .format("kafka")
                 .option("kafka.bootstrap.servers", bootstrapServers)
                 .option("startingOffsets", "earliest")
-                .option("subscribe", topic)
+                .option("subscribe", inputTopic)
                 .load();
 
         Dataset<RSSItemDTO> rssItemDS = kafkaStreamDS
@@ -64,15 +67,24 @@ public class SparkConsumerService {
                 .count()
                 .orderBy(col("count").desc());
 
+        StreamingQuery kafka = scoring.toJSON()
+                .writeStream()
+                .format("kafka")
+                .outputMode(OutputMode.Complete())
+                .option("kafka.bootstrap.servers", bootstrapServers)
+                .option("topic", outputTopic)
+                .option("checkpointLocation", "~/Desktop/checkpoint")
+                .queryName("urlCounterKafkaStream")
+                .start();
+
         StreamingQuery console = scoring
                 .writeStream()
                 .format("console")
-//                .option("checkpointLocation", "~/Desktop/checkpoint")
                 .outputMode(OutputMode.Complete())
-//                .trigger(Trigger.ProcessingTime(3000))
                 .start();
 
         try {
+            kafka.awaitTermination();
             console.awaitTermination();
         } catch (StreamingQueryException e) {
             e.printStackTrace();
