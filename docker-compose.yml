@@ -30,10 +30,22 @@ services:
     environment:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - KAFKA_TOPIC=onlineStream
+      - CASSANDRA_HOST=cassandra
+      - CASSANDRA_PORT=9142
+      - CASSANDRA_KEYSPACE=scoring
     volumes:
       - C:/Users/nryba/.m2/repository:/root/.m2/repository
       - ./microservice/spark-word-calculation:/app
-  #   # restart: on-failure
+    # restart: on-failure
+
+  # cassandra:
+  #   build: ./cassandra
+  #   container_name: cassandra
+  #   environment:
+  #     - CASSANDRA_KEYSPACE=scoring
+  #     - CASSANDRA_INIT_TABLE=scores
+  #   ports:
+  #     - '9142:9142'
 
   redis:
     image: redis:alpine
@@ -72,7 +84,7 @@ services:
     environment:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - KAFKA_TOPIC=onlineStream
-      - RSS_CRON_UPDATER=* 3/5 * * * *
+      - RSS_CRON_UPDATER=* 5/5 * * * *
       - PGHOST=postgres
       - PGPORT=5432
       - PGDATABASE=resourcedb
