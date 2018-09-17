@@ -29,7 +29,6 @@ public class KafkaConsumerConfiguration {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, RSSItemDeserializer.class);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupID);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, autoOffsetReset);
-//        props.put(ConsumerConfig.CLIENT_ID_CONFIG, "earliest");
 
         return props;
     }
