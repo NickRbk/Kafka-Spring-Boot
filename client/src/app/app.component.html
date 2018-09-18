@@ -1,2 +1,6 @@
 <div>{{title}}</div>
-<div *ngFor="let msg of messagesCount" >{{msg}}</div>
+<hr>
+<div>Total links: {{total}}</div>
+<ul *ngFor="let msg of messagesCount">
+  <li>({{msg.count}}) | {{msg.value}}</li>
+</ul>

@@ -14,6 +14,7 @@ export class AppComponent implements OnDestroy {
   private serverUrl = `http://localhost:8081/socket`;
   public title = 'WebSocket connection STATUS: OFFLINE... Please reload page';
   public messagesCount = [];
+  public total = 0;
   private newsSub: Subscription;
 
   constructor() {
@@ -27,11 +28,27 @@ export class AppComponent implements OnDestroy {
       this.title = 'WebSocket connection STATUS: OK';
       this.newsSub = client.subscribe('/news', (message) => {
         if (message.body) {
-          this.messagesCount.push(message.body);
+          const data = JSON.parse(message.body);
+          const domain = this.messagesCount.find(item => item.value ===  data.value);
+
+          if (domain) {
+            domain.count = data.count;
+          } else {
+            this.messagesCount.push(data);
+          }
+
+          this.messagesCount.sort((a, b) => b.count - a.count);
+          this.totalCount();
         }
       });
     });
     client.debug = () => {};
+  }
+
+  totalCount() {
+     this.total = this.messagesCount
+      .map(item => item.count)
+      .reduce((total, currentValue) => total + currentValue);
   }
 
   ngOnDestroy() {
