@@ -1,4 +1,4 @@
-package com.corevalue.writer.listener;
+package com.corevalue.writer.writer;
 
 import com.corevalue.writer.domain.RSSItem;
 import com.corevalue.writer.domain.RSSItemRepository;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @AllArgsConstructor
 @Service
-public class Listener {
+public class Writer {
     private final RSSItemRepository rssItemRepository;
 
     @KafkaListener(topics = "${kafka.topic}")
