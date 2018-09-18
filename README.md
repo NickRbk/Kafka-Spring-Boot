@@ -46,7 +46,7 @@ from each domain) _in real-time by websocket connection_ with listener service. 
 - Provide actual absolute path to your `.m2` directory on host machine in `docker-compose-dev.yml` file.
 
 - Enter to `microservice` folder and run `mvn clean install` to install parent pom for our microservices.
-- **:exclamation:IMPORTANTexclamation::** Enter to `postgres` folder and modify `init.sh`:
+- **:exclamation: IMPORTANT:** Enter to `postgres` folder and modify `init.sh`:
  select _**End of Line Sequence**_ from `CRLF` to `LF`. If you don't do that this script failed when you run docker
  because Linux don't recognize `CRLF` end line sequence.
 
