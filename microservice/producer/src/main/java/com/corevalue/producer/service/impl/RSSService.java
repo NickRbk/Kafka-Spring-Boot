@@ -60,7 +60,7 @@ public class RSSService implements IRSSService {
             tryToParseAndSendRSS(httpClient, request, topic, resourceUrl);
         } catch (IOException e) {
 //            this.processInvalidResource(resourceUrl, RSSErrorCode.ACCESS_ERROR, e.getMessage());
-//            log.error(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -75,7 +75,7 @@ public class RSSService implements IRSSService {
             sendRSSAndCacheLastItem(rssItems, topic, resourceUrl);
         } catch (FeedException e) {
 //            this.processInvalidResource(resourceUrl, RSSErrorCode.PARSE_ERROR, e.getMessage());
-//            log.error(e.getMessage());
+            log.error(e.getMessage());
         } catch (Exception e) {
             log.error("Something went wrong ================> " + e.getMessage());
         }

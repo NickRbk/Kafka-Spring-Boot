@@ -3,7 +3,6 @@ package com.corevalue.producer.event;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
-
 public class NewRSSEvent extends ApplicationEvent {
 
     @Getter

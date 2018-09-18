@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RSSItemDTO {
+public class DomainCounter {
     private String value;
     private Integer count;
 }

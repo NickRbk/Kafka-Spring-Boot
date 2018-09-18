@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import static org.apache.spark.sql.functions.from_json;
-import static org.apache.spark.sql.functions.col;
+import static org.apache.spark.sql.functions.*;
 
 import static com.corevalue.spark.config.SchemaDefinitions.rssSchema;
 
@@ -57,12 +57,6 @@ public class SparkConsumerService {
             return data.getUrl().substring(0, index);
         }, Encoders.STRING());
 
-//        Dataset<String> words = urlDS.flatMap((FlatMapFunction<String, String>) w -> {
-//           return Arrays.asList(w.toLowerCase().split(" ")).iterator();
-//        }, Encoders.STRING());
-//                .filter((FilterFunction<String>) String::isEmpty)
-//                .coalesce(1);
-
         Dataset<Row> scoring = urlDS.groupBy("value")
                 .count()
                 .orderBy(col("count").desc());
@@ -73,7 +67,7 @@ public class SparkConsumerService {
                 .outputMode(OutputMode.Complete())
                 .option("kafka.bootstrap.servers", bootstrapServers)
                 .option("topic", outputTopic)
-                .option("checkpointLocation", "~/Desktop/checkpoint")
+                .option("checkpointLocation", "/app/checkpoint/scoring")
                 .queryName("urlCounterKafkaStream")
                 .start();
 
