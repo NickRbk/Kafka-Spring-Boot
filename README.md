@@ -1,43 +1,70 @@
 # Online analytic service
 
 ## Overview
-This app build on Spring Boot, used PostgreSQL and Redis (for cache purpose) and Apache Kafka to process fetched data. 
+This app build on _**Spring Boot**_, used _**PostgreSQL**_ and _**Redis**_ (for cache purpose) and _**Apache Kafka**_ to 
+transport fetched data.
 
-_It is multi-container application_, the dev version of which includes the following services:
-1. _**ZooKeeper**_ as kluster manager for Apache Kafka.
-2. _**Apache Kafka**_ with predefined topic 'onlineStream'.
-3. _**Postgres**_ to store fetched data.
-4. _**pgAdmin**_ service to check data in PostgreSQL. You can access it on `localhost:80`.
-5. _**Redis**_ for cache and fetching only new data from target resources.
-6. _**Producer**_ parse RSS resources and sends messages to Kafka (used `KafkaTemplate`). 
+Also for data processing there was used _**Spark**_ (v2.3.1).
+
+#### _It is multi-container application_, which includes the following services:
+- _**ZooKeeper**_ as cluster manager for Apache Kafka.
+
+- _**Kafka**_ as distributed streaming service with predefined topics `onlineStream` and `urlCounterStream`.
+- _**Redis**_ for cache purpose to fetch only new data from target resources.
+- _**pgAdmin**_ service to check data in PostgreSQL. You can access it on `localhost:80` with the following credentials:
+    - `user`: _nick_
+    - `password`: _password_
+    - `db name`:  _rss_itemdb_ or _resourcedb_
+    - `port`: _5432_
+    - `host`: to get host exec `docker inspect postgres` and copy container IP.
+
+##### and the following custom images for:
+
+- _**Postgres**_ with predefined databases `resourcedb` and `rss_itemdb` to store fetched data. 
+
+- _**Producer**_ service which parse RSS resources and sends messages to Kafka (used `KafkaTemplate`). 
 This service connected with _Redis for cache last fetched data_. The process of fetching data from resources
-organized in _async manner_.
-7. _**Writer**_ receives the messages from Kafka and save it to PostgreSQL (used `@KafkaListener` for predefined topic 'onlineStream').
-8. _**Listener**_ receives the messages fromKafka and send it by websocket connection to client (only for test purpose).
-9. _**Client**_ service build on Angular on which we can see the programm results (the count of fetched data from RSS)
-in real-time by websocket connection with listener service. You can access it on `localhost:4200`.
+organized in _**async manner**_.
+- _**Writer**_ service receives the messages from Kafka and save it to PostgreSQL 
+(used `@KafkaListener` for predefined topic `onlineStream`).
+- _**Spark**_ service receives data from _Kafka_ by topic `onlineStream`, transform it to aggregated data grouped 
+by domain and finally send it to Kafka topic `urlCounterStream`. _Also you can see this sorted data on terminal_ 
+where you started this app. **So there used pipeline _Kafka -- Spark -- Kafka_**.
+- _**Listener**_ service receives the messages fromKafka and send it by websocket connection to client 
+(only for test purpose  to show results). Messages received by topic `urlCounterStream` and contain aggregated 
+information about counts of news by each domain.
+- _**Client**_ service build on Angular on which we can see the program results (the count of fetched data
+from each domain) _in real-time by websocket connection_ with listener service. You can access it on `localhost:4200`.
 
-To link services (containers) used Docker Compose.
+**To link services (containers) was used Docker Compose.**
 
-All configuration to start up project are in `docker-compose.yml` file.
+#### All configuration to start up project are in:
+ - `docker-compose.yml` file (prod mode)
+ - `docker-compose-dev.yml` file (dev mode)
 
-## Prerequesits
-- Provide actual absolute path to your `.m2` directory on host machine in `docker-compose.yml` file.
-- Enter to `microservice` folder and run `mvn install` to install parrent pom for our microservices.
-- Enter to `client` folder and run `yarn install` to install dependencies for frontend side.
+## Prerequisites (for dev mode)
+- Provide actual absolute path to your `.m2` directory on host machine in `docker-compose-dev.yml` file.
+
+- Enter to `microservice` folder and run `mvn clean install` to install parent pom for our microservices.
 - **IMPORTANT:** Enter to `postgres` folder and modify `init.sh`:
  select _**End of Line Sequence**_ from `CRLF` to `LF`. If you don't do that this script failed when you run docker
  because Linux don't recognize `CRLF` end line sequence.
 
- ## How to start app?
+## How to start app?
 1) download project `git clone https://github.com/NickRbk/Monitoring-service-docker.git`
-2) follow prerequesits
-2) enter to downloaded folder and run `docker-compose up --build`
+2) enter to downloaded folder:
 
-After application start up go to `localhost:4200` to monitor current work (it may takes a couple of minutes to up all containers).
-When you enter by this link you establish websocket connection with listener service and will get information about countes of items
-we received from RSS (on screen should be `WebSocket connection STATUS: OK`). 
+    - you can run app from pre-build images on Docker Hub by `docker-compose up` (prod mode)
 
-After start in 3 minutes workers will start to check resources from DB (sample data prepopulated) with schedule every 5 minutes.
+    - or follow the above prerequisites and run app in dev mode `docker-compose -f docker-compose-dev.yml up`.
 
-**To shut down app use `docker-compose down`**.
+After application start up go to `localhost:4200` to monitor current work (it may takes a couple of minutes 
+to up all containers, watch the progress on terminal).
+
+When you enter by this link you establish websocket connection with listener service and will get information 
+from listener service (on screen should be `WebSocket connection STATUS: OK`). 
+
+After start in _**2 minutes**_ `producer service` will start to check resources from DB (sample data of which service we 
+monitor was pre-populated) with schedule _**every 5 minutes**_.
+
+**To shut down app use `docker-compose down` or `docker-compose -f docker-compose-dev.yml down`**.
