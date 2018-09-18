@@ -46,7 +46,7 @@ from each domain) _in real-time by websocket connection_ with listener service. 
 - Provide actual absolute path to your `.m2` directory on host machine in `docker-compose-dev.yml` file.
 
 - Enter to `microservice` folder and run `mvn clean install` to install parent pom for our microservices.
-- **IMPORTANT:** Enter to `postgres` folder and modify `init.sh`:
+- **:exclamation:IMPORTANTexclamation::** Enter to `postgres` folder and modify `init.sh`:
  select _**End of Line Sequence**_ from `CRLF` to `LF`. If you don't do that this script failed when you run docker
  because Linux don't recognize `CRLF` end line sequence.
 
@@ -57,6 +57,8 @@ from each domain) _in real-time by websocket connection_ with listener service. 
     - you can run app from pre-build images on Docker Hub by `docker-compose up` (prod mode)
 
     - or follow the above prerequisites and run app in dev mode `docker-compose -f docker-compose-dev.yml up`.
+
+:exclamation: _**On some reasons to start this application you will need to increase limit of resources available for Docker**_.
 
 After application start up go to `localhost:4200` to monitor current work (it may takes a couple of minutes 
 to up all containers, watch the progress on terminal).
