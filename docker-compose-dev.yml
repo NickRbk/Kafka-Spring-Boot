@@ -6,7 +6,6 @@ services:
     container_name: zookeeper
     ports:
       - '2181:2181'
-    restart: on-failure
 
   kafka:
     image: wurstmeister/kafka:2.11-2.0.0
@@ -18,10 +17,11 @@ services:
       - KAFKA_ADVERTISED_PORT=9092
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - KAFKA_CREATE_TOPICS=onlineStream, urlCounterStream
-    restart: on-failure
 
   spark:
-    image: nickrybak/kafka-spark-spark
+    build:
+      context: ./microservice/spark
+      dockerfile: Dockerfile-dev
     container_name: spark
     links:
       - kafka
@@ -29,7 +29,10 @@ services:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - KAFKA_INPUT_TOPIC=onlineStream
       - KAFKA_OUTPUT_TOPIC=urlCounterStream
-    restart: on-failure
+    volumes:
+      - C:/Users/nryba/.m2/repository:/root/.m2/repository
+      - /app/checkpoint/scoring
+      - ./microservice/spark:/app
 
   redis:
     image: redis:alpine
@@ -38,14 +41,14 @@ services:
       - '6379:6379'
     
   postgres:
-    image: nickrybak/kafka-spark-postgres
+    build: ./postgres
     container_name: postgres
     environment:
       - POSTGRES_PASSWORD=password
       - POSTGRES_USER=nick
     ports:
       - '5432:5432'
-    restart: on-failure
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
@@ -54,10 +57,11 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=admin
     ports:
       - '80:80'
-    restart: on-failure
 
   producer:
-    image: nickrybak/kafka-spark-producer
+    build:
+      context: ./microservice/producer
+      dockerfile: Dockerfile-dev
     container_name: producer
     links:
       - postgres
@@ -74,10 +78,14 @@ services:
       - PGPASSWORD=password
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-    restart: on-failure
+    volumes:
+      - C:/Users/nryba/.m2/repository:/root/.m2/repository
+      - ./microservice/producer:/app
   
   writer:
-    image: nickrybak/kafka-spark-writer
+    build:
+      context: ./microservice/writer
+      dockerfile: Dockerfile-dev
     container_name: writer
     links:
       - postgres
@@ -90,10 +98,14 @@ services:
       - PGDATABASE=rss_itemdb
       - PGUSER=nick
       - PGPASSWORD=password
-    restart: on-failure
+    volumes:
+      - C:/Users/nryba/.m2/repository:/root/.m2/repository
+      - ./microservice/writer:/app
 
   listener:
-    image: nickrybak/kafka-spark-listener
+    build:
+      context: ./microservice/listener
+      dockerfile: Dockerfile-dev
     container_name: listener
     links:
       - postgres
@@ -101,13 +113,19 @@ services:
     environment:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - KAFKA_TOPIC=urlCounterStream
+    volumes:
+      - C:/Users/nryba/.m2/repository:/root/.m2/repository
+      - ./microservice/listener:/app
     ports:
       - '8081:8080'
-    restart: on-failure
   
   client:
-    image: nickrybak/kafka-spark-client
+    build:
+      context: ./client
+      dockerfile: Dockerfile-dev
     container_name: client
+    volumes:
+      - /app/node_modules
+      - ./client:/app
     ports:
       - '4200:4200'
-    restart: on-failure

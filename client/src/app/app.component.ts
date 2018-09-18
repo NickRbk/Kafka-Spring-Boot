@@ -13,7 +13,7 @@ export class AppComponent implements OnDestroy {
 
   private serverUrl = `http://localhost:8081/socket`;
   public title = 'WebSocket connection STATUS: OFFLINE... Please reload page';
-  public messagesCount = 0;
+  public messagesCount = [];
   private newsSub: Subscription;
 
   constructor() {
@@ -27,7 +27,7 @@ export class AppComponent implements OnDestroy {
       this.title = 'WebSocket connection STATUS: OK';
       this.newsSub = client.subscribe('/news', (message) => {
         if (message.body) {
-          this.messagesCount++;
+          this.messagesCount.push(message.body);
         }
       });
     });

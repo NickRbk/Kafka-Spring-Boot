@@ -1,4 +1,4 @@
-package com.corevalue.listener.model;
+package com.corevalue.spark.model;
 
 import lombok.*;
 
@@ -12,6 +12,6 @@ public class RSSItemDTO {
     private String title;
     private String type;
     private String description;
-    private long publishedDate;
+    private Long publishedDate;
     private String author;
 }
